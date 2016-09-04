@@ -21,7 +21,22 @@ func (pm *processManager) run() {
 
 	start := time.Now()
 
-	os.Remove(pm.conf.build)
+	if pm.conf.build != "" {
+		if _, err := os.Stat(pm.conf.build); err == nil {
+			logger.Debug("Build file Found!")
+		}
+	}
+
+	err := os.Remove(pm.conf.build)
+	if err != nil && !os.IsNotExist(err) {
+		logger.Warnf("Build file not removed! %s", err.Error())
+	}
+
+	err = os.Remove(pm.conf.build)
+	if err != nil && !os.IsNotExist(err) {
+		logger.Warnf("Build file Found STILL! %s", err.Error())
+	}
+
 	out, err := exec.Command("go", "build", "-o", pm.conf.build).CombinedOutput()
 
 	if err != nil {
