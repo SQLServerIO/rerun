@@ -29,9 +29,8 @@ func convertAbsolute(path string) (string, error) {
 	abs, err := filepath.Abs(path)
 	if err == nil {
 		return abs, nil
-	} else {
-		return path, err
 	}
+	return path, err
 }
 
 // takes an array of (maybe) relative paths and convert them to their absolute representatives

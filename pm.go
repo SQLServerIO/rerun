@@ -12,7 +12,7 @@ type processManager struct {
 	oscmd *exec.Cmd
 }
 
-func (p *processManager) formatBuildTime(duration time.Duration) string {
+func (pm *processManager) formatBuildTime(duration time.Duration) string {
 	return fmt.Sprintf("%.2f(s)", duration.Seconds())
 }
 

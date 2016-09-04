@@ -45,7 +45,7 @@ func parseConf(path string) (*config, error) {
 }
 
 func loadConfiguration() (*config, error) {
-	if !TEST_MODE {
+	if !TestMode {
 		kingpin.Version("1.0.0")
 		kingpin.Parse()
 	}
