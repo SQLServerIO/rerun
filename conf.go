@@ -19,6 +19,7 @@ var (
 	suffixes = kingpin.Flag("suffixes", "File suffixes to watch.").Short('s').String()
 	confPath = kingpin.Flag("config", "JSON configuration location").Short('c').String()
 	attrib   = kingpin.Flag("attrib", "Also watch attribute changes").Bool()
+	appName  = kingpin.Flag("appname", "JSON configuration location").Short('p').String()
 )
 
 type config struct {
@@ -26,6 +27,7 @@ type config struct {
 	Args     []string
 	Suffixes []string
 	Attrib   bool
+	AppName  string
 	build    string
 }
 
@@ -81,7 +83,15 @@ func loadConfiguration() (*config, error) {
 		conf.Attrib = *attrib
 	}
 
-	buildName := "application-build-" + strconv.FormatInt(time.Now().UnixNano(), 10)
+	if len(conf.AppName) == 0 {
+		if len(*appName) == 0 {
+			conf.AppName = "Random Build-"
+		}
+		conf.AppName = *appName
+	}
+
+	buildName := conf.AppName + "-" + strconv.FormatInt(time.Now().UnixNano(), 10)
+
 	if runtime.GOOS == "windows" {
 		buildName += ".exe"
 	}
